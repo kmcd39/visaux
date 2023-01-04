@@ -8,7 +8,7 @@ ragg.wrapper(
   fn = NULL,
   plot = ggplot2::last_plot(),
   sv.dir = "visuals/",
-  width = 10,
+  width = 8,
   height = 8,
   res = 188,
   units = "in"

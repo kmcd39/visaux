@@ -23,15 +23,13 @@ cap.at.quantile <- function(x, ptile = .95, na.rm = T) {
 }
 
 
-#' capped.ggplot.labels
+#' ggcapped.labels
 #'
 #' Use in a ggplot2 scales for capped labels. Intended to be passed onto
-#' `labels` argument.
+#' `labels` argument. I.e., scale_fill_viridis_c(labels = visaux::ggcapped.labels(x))
 #'
-#'
-#'
-#' @export capped.ggplot.labels
-capped.ggplot.labels <- function(x, tails = 'one'
+#' @export ggcapped.labels
+ggcapped.labels <- function(x, tails = 'one'
                                  ) {
   x[length(x)] <- paste0('>', x[length(x)])
 
