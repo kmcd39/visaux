@@ -23,6 +23,33 @@ cap.at.quantile <- function(x, ptile = .95, na.rm = T) {
 }
 
 
+#' capped.ggplot.labels
+#'
+#' Use in a ggplot2 scales for capped labels. Intended to be passed onto
+#' `labels` argument.
+#'
+#'
+#'
+#' @export capped.ggplot.labels
+capped.ggplot.labels <- function(x, tails = 'one'
+                                 ) {
+  x[length(x)] <- paste0('>', x[length(x)])
+
+  if(tails == 'one')
+    return(x)
+
+  x[1] <- paste0('<', x[1])
+
+  return(x)
+}
+
+
+
+# older fcns --------------------------------------------------------------
+
+# i want to break out the fcn that just transforms i.e., (0,5] default cut label
+# into more outward facing versions...
+
 #' get.quantile.breaks
 #'
 #' bins a sequential variable based on value ranges. It can often
