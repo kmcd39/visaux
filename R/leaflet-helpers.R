@@ -71,8 +71,6 @@ zoom_to_bounds <- function( x, mapID="map" ) {
 }
 
 
-
-
 # functions to update leafletProxy ----------------------------------
 
 #' i think these two should go away. Learning process!

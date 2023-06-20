@@ -1,34 +1,3 @@
-# interpolation ------------------------------------------------------------------
-
-#' col2opacity
-#'
-#' Designed to interpolate numerics to opacities for a map or other visualization.
-#'
-#' @param x numeric vector to interpolate opacities for.
-#' @param n_breaks number of breaks cut values into (before using floor)
-#' @param opacity_range Bounds opacities between these values. Acts as floor/ceiling
-#'   as opposed to range to interpolate along.
-#'
-#' @return numeric vector that can be used to represent other values through opacity.
-#'
-#' @export col2opacity
-col2opacity <- function(x, n_breaks = 5, opacity_range = c(.35, .95), ...) {
-
-  # bin input vector
-  binned_x <- bin.var_format(x, n_breaks = n_breaks, use_labels = F)
-
-  # convert bins to numeric factor levels, scale to maximum
-  alphas <-
-    as.numeric(binned_x) /
-    max(as.numeric(binned_x), na.rm = T)
-
-  # apply opacity floor/ceiling
-  alphas <- case_when( alphas > opacity_range[2] ~ opacity_range[2],
-                       alphas < opacity_range[1] ~ opacity_range[1],
-                       TRUE ~ alphas )
-
-  return(alphas)
-}
 
 
 # cropping & static zooms ------------------------------------------------------
@@ -44,6 +13,7 @@ col2opacity <- function(x, n_breaks = 5, opacity_range = c(.35, .95), ...) {
 #'
 #' @export cntr2bbx
 cntr2bbx <- function(cntr, buffer, crs) {
+
   require(sf)
   cntr <- st_transform(cntr,  "+proj=lcc +lon_0=-90 +lat_1=33 +lat_2=45")
 
@@ -123,8 +93,6 @@ add.map.layers <- function(sfx,
   }
   return(lyrs)
 }
-
-
 
 
 
@@ -252,46 +220,4 @@ bbox2ggcrop <- function(sfx, crs = 4326, clip = 'on') {
 }
 
 
-# palettes ----------------------------------------------------------------
-
-#' n.categories.discrete.palette
-#'
-#' It's possible to run out of colors when visualizing with a large number of
-#' discrete categories. This wraps the steps to interpolote a palette across
-#' your number of categories, so variations of the colors are re-used. Helpful
-#'
-#' It returns a ggplot2 layer, by default for a `fill` aesthetic
-#'
-#' @examples
-#' library(ggplot2)
-#' x <- factor(rnorm(30))
-#' scale_fill_manual(values = n.categories.discrete.palette(length(x)))
-#'
-#' @export n.categories.discrete.palette
-n.categories.discrete.palette <- function(
-    ncats
-    ,base.pal = RColorBrewer::brewer.pal(6, 'Dark2')
-    ) {
-
-  sample( colorRampPalette(base.pal)(ncats) )
-
-}
-
-
-# conversions -------------------------------------------------------------
-
-#' sqm2acre
-#'
-#' Conversion factor for square meters to acres
-#'
-#' @export sqm2acre
-sqm2acre <- function() {
-  sqm2acre <- 1e6 / 247.105
-}
-
-
-# areas from bbx ---------------------------------------------------------------
-
-# when I'm interested in creating a plot and limiting bounds using coord_sf, or
-# otherwise basing plot on a bbox rather than vector barriers.
 

@@ -73,7 +73,23 @@ upper.legend.box <- function() {
 
 
 
+# palettes ----------------------------------------------------------------
 
+
+#' jewel.pal
+#'
+#' Returns some jewel-toney colors that can be nice for discrete data
+#' visualization. Colorblindness simulator seems to show decent accessibility.
+#'
+#' @export jewel.pal
+jewel.pal <- function() {
+
+  jewel.tones <- c('#880088', '#000088'
+                   ,'#dd9933', '#008888'
+                   ,'#bb1e39', '#88ac7f'
+  )
+  return(jewel.tones)
+}
 
 # data tables -------------------------------------------------------------
 

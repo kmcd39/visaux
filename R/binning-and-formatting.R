@@ -140,23 +140,6 @@ get_mean_from_interval <- function(interval) {
 # formating ---------------------------------------------------------------
 
 
-
-
-
-#' q.format
-#'
-#' Quick format. Quick helper function to format numerics for readability.
-#'
-#' @export q.format
-q.format <- function(x, digits = 1, perc = F) {
-  out <-
-    formatC(x, big.mark = ",", digits = digits, format = "f", drop0trailing = TRUE) %>%
-    trimws()
-  if(perc)
-    out <- paste0(out,"%")
-  return(out)
-}
-
 #' formated2numeric
 #'
 #' Turns a formatted number string back into a numeric
@@ -170,8 +153,6 @@ format_as.numeric <- function(x) {
 
 
 
-
-
 # string formating -------------------------------------------------------------
 
 
@@ -182,9 +163,9 @@ format_as.numeric <- function(x) {
 #'
 #' @export linebreaks2string
 linebreaks2string <- function(x
-                              , line.char.len = 80
+                              ,line.char.len = 80
                               ,clean.ws = T
-                              , line.break = '\n') {
+                              ,line.break = '\n') {
   # first remove breaks
   x <- gsub('\n', ' ', x)
 
