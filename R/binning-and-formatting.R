@@ -43,6 +43,9 @@ ggcapped.labels <- function(x, tails = 'one'
 
 
 
+
+
+
 # older fcns --------------------------------------------------------------
 
 # i want to break out the fcn that just transforms i.e., (0,5] default cut label
@@ -140,6 +143,61 @@ get_mean_from_interval <- function(interval) {
 # formating ---------------------------------------------------------------
 
 
+#' number.to.formatted.string
+#'
+#' Divides by the largest of thousand, million, billion, trillion and appends
+#' string to modify units.
+#'
+#' @param x A number to format (not a vector)
+#' @param format.fcn A formatting function to apply to number part of output.
+#' @param pluralize Whether to pluralize; i.e., "million(s)"
+#'
+#' @export number.to.formatted.string
+number.to.formatted.string <- function(
+     x
+    ,format.fcn =
+      #  function(x) format(x, big.mark = ',', digits = 1 scientific = F)
+      scales::label_comma(accuracy = .1, drop0trailing = T)
+    ,pluralize = F
+) {
+
+  #browser()
+
+  #format.fcn <- function(x) format(x, ..., scientific = F, drop0trailing = T)
+
+  div.factors <- c(1e3, 1e6, 1e9, 1e12)
+  div.lbls <-  c('thousand', 'million', 'billion', 'trillion')
+
+  if( abs(x) < min(div.factors) )
+    return( format.fcn(x) )
+
+  if(pluralize)
+    div.lbls <- paste0(div.lbls, 's')
+
+  # max(div.factors[div.factors < 5e10 ])
+  # ?max(div.factors[div.factors < 5 ])
+  div.factor <- max(div.factors[div.factors < abs(x) ])
+
+  fx <-
+    paste0(
+      format.fcn(x / div.factor),
+      ' ',
+      div.lbls[which(div.factors == div.factor)]
+    )
+
+  return(fx)
+}
+
+# number.to.formated.string(-4321713218)
+# number.to.formated.string(4)
+#
+# number.to.formated.string(482319750321894327)
+# number.to.formated.string(1.7787134718e3)
+# number.to.formated.string(-1.7787134718e10)
+# number.to.formated.string(100.210312e6)
+
+
+
 #' formated2numeric
 #'
 #' Turns a formatted number string back into a numeric
@@ -151,33 +209,4 @@ format_as.numeric <- function(x) {
   )
 }
 
-
-
-# string formating -------------------------------------------------------------
-
-
-#' linebreaks2string
-#'
-#' Removes white space (if `clean.ws` is true), then adds linebreaks at uniform
-#' intervals. Can deal with very long ggplot captions, for example
-#'
-#' @export linebreaks2string
-linebreaks2string <- function(x
-                              ,line.char.len = 80
-                              ,clean.ws = T
-                              ,line.break = '\n') {
-  # first remove breaks
-  x <- gsub('\n', ' ', x)
-
-  if(clean.ws)
-    x <- gsub('  +', ' ', x)
-
-  # then add new ones at every x characters
-  regex <- paste0('(.{'
-                  ,line.char.len,
-                  ',}?)\\s')
-
-  x <- gsub(regex, "\\1\n", x)
-  return(x)
-}
 
