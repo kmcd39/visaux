@@ -176,7 +176,7 @@ number.to.formatted.string <- function(
 
   # max(div.factors[div.factors < 5e10 ])
   # ?max(div.factors[div.factors < 5 ])
-  div.factor <- max(div.factors[div.factors < abs(x) ])
+  div.factor <- max(div.factors[div.factors <= abs(x) ])
 
   fx <-
     paste0(
