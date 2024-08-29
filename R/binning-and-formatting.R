@@ -163,6 +163,9 @@ number.to.formatted.string <- function(
 
   #browser()
 
+  if(is.na(x))
+    return( as.character(NA) )
+
   #format.fcn <- function(x) format(x, ..., scientific = F, drop0trailing = T)
 
   div.factors <- c(1e3, 1e6, 1e9, 1e12)
