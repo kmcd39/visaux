@@ -67,13 +67,14 @@ ragg.wrapper <- function(fn = NULL
 #'
 #' @export vector.ggsave
 #'
-vector.ggsave <- function(plot,
-                         fn,
-                         sv.dir = "visuals/",
-                         ext = "svg",
-                         height = 7,
-                         width = height * 1.2,
-                         ...) {
+vector.ggsave <- function(
+    fn,
+    plot = ggplot2::last_plot(),
+    sv.dir = "visuals/",
+    ext = "svg",
+    height = 7,
+    width = height * 1.2,
+    ...) {
 
   if(!dir.exists(sv.dir))
     dir.create(sv.dir)

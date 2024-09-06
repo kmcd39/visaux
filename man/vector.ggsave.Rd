@@ -5,8 +5,8 @@
 \title{vector.ggsave}
 \usage{
 vector.ggsave(
-  plot,
   fn,
+  plot = ggplot2::last_plot(),
   sv.dir = "visuals/",
   ext = "svg",
   height = 7,
