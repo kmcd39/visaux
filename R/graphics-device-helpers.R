@@ -59,32 +59,50 @@ ragg.wrapper <- function(fn = NULL
 
 
 
-#' ggsave.hirez
+#' vector.ggsave
 #'
-#' Wraps ggsave with some defaults I'm finding sensible. I think this is inferior to
-#' `ragg.wrapper`
+#' Wraps ggsave with some defaults to save vectorized images.
 #'
 #' @param dir,fn directory and filename to save to
 #'
-#' @export ggsave.hirez
-ggsave.hirez <- function(plot,
-                         dir, fn,
-                         ext = "png",
-                         height = 7.5,
-                         units = "in",
-                         dpi = 340,
+#' @export vector.ggsave
+#'
+vector.ggsave <- function(plot,
+                         fn,
+                         sv.dir = "visuals/",
+                         ext = "svg",
+                         height = 7,
+                         width = height * 1.2,
                          ...) {
 
-  require(ggplot2)
-  width <- height * 1.228
+  if(!dir.exists(sv.dir))
+    dir.create(sv.dir)
 
-  ggsave(
-    filename = paste0(dir, fn, ".", ext),
+  # gen filename if NULL
+  if(is.null(fn)) {
+
+    extant.defaults <- list.files(sv.dir
+                                  , pattern = '-[0-9]*\\.png')
+
+    nm <- stringr::str_extract(extant.defaults
+                               ,'[0-9]+')
+    if(length(nm) == 0)
+      nm <- 0
+
+    nm <- max(as.numeric(nm)) + 1
+
+    fn <- glue::glue('-{nm}')
+  }
+
+  path <- paste0(sv.dir
+                 ,fn, '.', ext
+                 )
+
+  ggplot2::ggsave(
+    filename = path,
     plot = plot,
     height = height,
     width = width,
-    units = units,
-    dpi = dpi,
     ...
   )
 }
