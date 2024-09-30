@@ -168,8 +168,10 @@ number.to.formatted.string <- function(
 
   #format.fcn <- function(x) format(x, ..., scientific = F, drop0trailing = T)
 
-  div.factors <- c(1e3, 1e6, 1e9, 1e12)
-  div.lbls <-  c('thousand', 'million', 'billion', 'trillion')
+  div.factors <- c(1e2, 1e3, 1e6,
+                   1e9, 1e12, 1e15)
+  div.lbls <-  c("hundred", 'thousand', 'million',
+                 'billion', 'trillion', "quadrillion")
 
   if( abs(x) < min(div.factors) )
     return( format.fcn(x) )
