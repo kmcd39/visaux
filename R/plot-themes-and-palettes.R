@@ -1,58 +1,114 @@
-#' add.plot.theme
-#'
-#' Add base plot theme.
-#'
-#' @export add.plot.theme
-add.plot.theme <- function( fontsize = 10
-                            ,leg.pos = 'top'
-                            #,font='Arial'
-                            #,facet.label.font.size = fontsize
-                            ,...
-) {
-  require(extrafont)
 
-  list(
-    theme_minimal() ,
-    theme( panel.grid.major.x = element_blank()
-           ,legend.position = leg.pos
-           #,panel.grid.major.x = element_blank()
-           ,panel.grid.minor = element_blank()
-           ,text = element_text(
-             size = fontsize,
-             family = font)
-           # for facet warp labels
-           ,strip.background = element_rect(
-             fill = aevis::aecom.palette()[2] )
-           ,strip.text = element_text(
-             face = 'bold'
-             ,color = 'white'
-             ,size = fontsize - 1)
-           ,... )
-  )
+# log scale helpers -------------------------------------------------------
+
+# originally from ccpDOT project.
+
+
+#' breaks_log10
+#'
+#' Manually adds breaks at very power of 10 for log-scale axes.
+#'
+#' solution from https://r-graphics.org/recipe-axes-axis-log-ticks
+#'
+#
+breaks_log10 <- function(x) {
+  low <- floor(log10(min(x)))
+  high <- ceiling(log10(max(x)))
+
+  10^(seq.int(low, high))
+}
+
+#' minor.breaks_log10
+#'
+#'
+#' Manually adds minor breaks at very power of 5 for log-scale axes.
+#'
+#'
+minor.breaks_log10 <- function(x) {
+  #browser()
+  low <- floor(log10(min(x)/5))
+  high <- ceiling(log10(max(x)/5))
+
+  # outer(c(2.5, 5, 7.5),
+  #       10^(seq.int(low, high))
+  #       ) %>%
+  #   as.vector()
+
+  5 * 10^(seq.int(low, high))
 }
 
 
-#' add.map.theme
+#' ggthme.logscales
 #'
-#' Add base map theme.
+#' @param axis.lbl.style whether to apply `visaux::number.to.formatted.string`
+#'   to log axis labels
 #'
-#' @export add.map.theme
-add.map.theme <- function(fontsize = 11
-                          ,leg.pos = 'right'
-                          #,font='Arial'
-                          ,lmargin = margin(4,4,4,4)
-                          , ...) {
-  require(extrafont)
+#' @export ggthme.logscales
+#'
+ggthme.logscales <- function(
+    axis.lbl.style = F
+    ) {
+
+  if(axis.lbl.style){
+    lbl.style <- ~map(.x, visaux::number.to.formatted.string)
+  } else {
+    lbl.style <- ggplot2::waiver()
+  }
 
   list(
-    theme_void() ,
-    theme( legend.position = leg.pos
-           ,text = element_text( size = fontsize
-                                 ,family=font)
-           ,legend.box.margin = lmargin
-           ,legend.justification = 'top'
-           ,... )
+    "base.theme" =
+      hrbrthemes::theme_ipsum()
+
+    ,"log.x.axis" =
+      scale_x_log10(
+        breaks = breaks_log10
+        ,minor_breaks  =  minor.breaks_log10
+        ,labels = lbl.style
+      )
+
+    ,"log.y.axis" =
+      scale_y_log10(
+        breaks = breaks_log10
+        ,minor_breaks = minor.breaks_log10
+        ,labels = lbl.style
+      )
+
+    ,"grid.details" =
+      theme(panel.grid.major =
+              element_line(color = "grey65",
+                           linewidth = 0.25)
+            ,panel.grid.minor =
+              element_line(color = "grey75",
+                           linewidth = 0.18)
+      )
   )
+
+
+}
+
+# general ggplot themes ---------------------------------------------------
+
+
+
+#' ggemphatic.facet.labels
+#'
+#' Adds theme
+#'
+#' @export ggemphatic.facet.labels
+#'
+ggemphatic.facet.labels <- function(
+    strip.color = visaux::jewel.pal()[4]) {
+
+  ggplot2::theme(
+    strip.background = element_rect(
+      fill = strip.color )
+    ,strip.text = element_text(
+      face = 'bold'
+      ,color = 'white'
+      #,size = fontsize - 1
+      )
+  )
+
 }
 
 
@@ -61,12 +117,17 @@ add.map.theme <- function(fontsize = 11
 #' Draws a box around a legend and top-justifies
 #'
 #' @export upper.legend.box
-upper.legend.box <- function() {
+#'
+upper.legend.box <- function(
+     leg.pos = 'right'
+    ,lmargin = margin(4,4,4,4)
+    ) {
 
-  theme(
-    legend.box.background = element_rect(color="gray30"
+  ggplot2::theme(
+     legend.position = leg.pos
+    ,legend.box.background = element_rect(color="gray30"
                                          , size=.05)
-    ,legend.box.margin = margin(4,4,4,4)
+    ,legend.box.margin = lmargin
     ,legend.justification = 'top'
   )
 }
@@ -99,6 +160,7 @@ jewel.pal <- function() {
 #' Wrapped DT::datatable defaults
 #'
 #' @export dt.table.template
+#'
 dt.table.template <- function(x) {
 
   DT::datatable(x
