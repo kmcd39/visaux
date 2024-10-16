@@ -4,7 +4,7 @@
 \alias{upper.legend.box}
 \title{upper.legend.box}
 \usage{
-upper.legend.box()
+upper.legend.box(leg.pos = "right", lmargin = margin(4, 4, 4, 4))
 }
 \description{
 Draws a box around a legend and top-justifies
