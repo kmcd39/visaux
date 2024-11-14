@@ -32,3 +32,19 @@ tmp %>%
     ,minor_breaks = minor.breaks_log10
     ,labels = ggplot2::waiver()
   )
+
+
+# wrapped in the full theme
+devtools::load_all()
+tmp %>%
+  filter(x > 0 & y > 0
+       ) %>%
+  ggplot(
+    aes(x, y)
+  ) +
+
+  geom_point() +
+  ggthme.logscales(
+    break.intervals = list(x = 1, y = c(1,3))
+  ,minor.breaks = list( x = minor.breaks_log10, y = NULL)
+  )

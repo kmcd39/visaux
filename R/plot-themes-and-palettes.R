@@ -52,17 +52,24 @@ minor.breaks_log10 <- function(x) {
 #'
 #' @param axis.lbl.style whether to apply `visaux::number.to.formatted.string`
 #'   to log axis labels
-#' @param x.break.intervals,y.break.intervals A vector of numerics between [1,9]
-#'   for there to be major breaks at every power of 10. I.e. every 1e6, 1e7 if
-#'   left at just one, but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
+#' @param break.intervals A vector of numerics between [1,9] for there to be
+#'   major breaks at every power of 10. I.e. every 1e6, 1e7 if left at just one,
+#'   but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
+#' @param minor.breaks List with elements for x and y to pass onto
+#'   `minor_breaks` in the scale
+#'
 #'
 #' @import ggplot2
 #'
 #' @export ggthme.logscales
 #'
 ggthme.logscales <- function(
-     x.break.intervals = c(1)
-    ,y.break.intervals = c(1)
+     break.intervals =
+       list( x = c(1)
+            ,y = c(1))
+    ,minor.breaks =
+      list( x = minor.breaks_log10
+           ,y = minor.breaks_log10)
     ,axis.lbl.style = F
     ) {
 
@@ -78,15 +85,15 @@ ggthme.logscales <- function(
 
     ,"log.x.axis" =
       scale_x_log10(
-        breaks = breaks_log10
-        ,minor_breaks  =  minor.breaks_log10
+        breaks = ~breaks_log10(.x, break.intervals$x)
+        ,minor_breaks  =  minor.breaks$x
         ,labels = lbl.style
       )
 
     ,"log.y.axis" =
       scale_y_log10(
-        breaks = breaks_log10
-        ,minor_breaks = minor.breaks_log10
+        breaks = ~breaks_log10(.x, break.intervals$y)
+        ,minor_breaks = minor.breaks$y
         ,labels = lbl.style
       )
 
