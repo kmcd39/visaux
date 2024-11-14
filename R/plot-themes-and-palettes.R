@@ -8,14 +8,24 @@
 #'
 #' Manually adds breaks at very power of 10 for log-scale axes.
 #'
-#' solution from https://r-graphics.org/recipe-axes-axis-log-ticks
+#' solution adapted from https://r-graphics.org/recipe-axes-axis-log-ticks
 #'
-#
-breaks_log10 <- function(x) {
+#' @param x vector mapped to x or y scales.
+#' @param break.intervals A vector of numerics between [1,9] for there to be
+#'   major breaks at every power of 10. I.e. every 1e6, 1e7 if left at just one,
+#'   but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
+#'
+#'  @export breaks_log10
+#'
+breaks_log10 <- function(x, break.intervals = c(1)) {
+
   low <- floor(log10(min(x)))
   high <- ceiling(log10(max(x)))
 
-  10^(seq.int(low, high))
+  #browser()
+  breaks <- as.vector(outer(break.intervals, 10 ^ (seq.int(low, high))))
+
+  return(breaks)
 }
 
 #' minor.breaks_log10
@@ -25,7 +35,7 @@ breaks_log10 <- function(x) {
 #'
 #'
 minor.breaks_log10 <- function(x) {
-  #browser()
+
   low <- floor(log10(min(x)/5))
   high <- ceiling(log10(max(x)/5))
 
@@ -42,15 +52,22 @@ minor.breaks_log10 <- function(x) {
 #'
 #' @param axis.lbl.style whether to apply `visaux::number.to.formatted.string`
 #'   to log axis labels
+#' @param x.break.intervals,y.break.intervals A vector of numerics between [1,9]
+#'   for there to be major breaks at every power of 10. I.e. every 1e6, 1e7 if
+#'   left at just one, but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
+#'
+#' @import ggplot2
 #'
 #' @export ggthme.logscales
 #'
 ggthme.logscales <- function(
-    axis.lbl.style = F
+     x.break.intervals = c(1)
+    ,y.break.intervals = c(1)
+    ,axis.lbl.style = F
     ) {
 
   if(axis.lbl.style){
-    lbl.style <- ~map(.x, visaux::number.to.formatted.string)
+    lbl.style <- ~purrr::map(.x, visaux::number.to.formatted.string)
   } else {
     lbl.style <- ggplot2::waiver()
   }
@@ -87,8 +104,6 @@ ggthme.logscales <- function(
 }
 
 # general ggplot themes ---------------------------------------------------
-
-
 
 #' ggemphatic.facet.labels
 #'
@@ -145,7 +160,7 @@ upper.legend.box <- function(
 #' @export jewel.pal
 jewel.pal <- function() {
 
-  jewel.tones <- c('#880088', '#000088'
+  jewel.tones <- c( '#880088', '#000088'
                    ,'#dd9933', '#008888'
                    ,'#bb1e39', '#88ac7f'
   )

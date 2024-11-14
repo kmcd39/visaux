@@ -162,6 +162,9 @@ dot.map.template <- function(dots, bbx = NULL, group.col = "group"
 #'   it. 'Watercolor' is pretty but very colorful and bad for chloropleths. Could be
 #'   interesting for some other types of visuals.
 #'
+#' @importFrom ggmap get_stamenmap
+#' @importFrom sf st_transform st_bbox
+#'
 #' @export get.stamen.bkg
 get.stamen.bkg <- function(sfx
                            ,maptype = c('toner-background'
@@ -171,16 +174,16 @@ get.stamen.bkg <- function(sfx
                            , ...) {
 
   # load ggmap
-  require(ggmap)
+  requireNamespace("ggmap")
 
   maptype <- maptype[1]
 
   # turn sf to bbox if needed
   if(! 'bbox' %in% class(sfx)) {
     # to longlat
-    sfx <- sfx %>% st_transform(4326)
+    sfx <- sfx %>% sf::st_transform(4326)
     # to bbox
-    sfx <- sfx %>% st_bbox()
+    sfx <- sfx %>% sf::st_bbox()
   }
 
   sttm <- ggmap::get_stamenmap(
@@ -210,7 +213,7 @@ bbox2ggcrop <- function(sfx, crs = 4326, clip = 'on') {
 
   # turn sf to bbox if needed
   if(! 'bbox' %in% class(sfx))
-    sfx <- sfx %>% st_transform(crs) %>% st_bbox()
+    sfx <- sfx %>% sf::st_transform(crs) %>% sf::st_bbox()
 
 
   # return coord_sf

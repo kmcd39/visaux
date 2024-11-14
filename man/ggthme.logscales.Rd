@@ -4,9 +4,17 @@
 \alias{ggthme.logscales}
 \title{ggthme.logscales}
 \usage{
-ggthme.logscales(axis.lbl.style = F)
+ggthme.logscales(
+  x.break.intervals = c(1),
+  y.break.intervals = c(1),
+  axis.lbl.style = F
+)
 }
 \arguments{
+\item{x.break.intervals, y.break.intervals}{A vector of numerics between \link{1,9}
+for there to be major breaks at every power of 10. I.e. every 1e6, 1e7 if
+left at just one, but 1e6, 3e6, 1e6, 3e7 if includes \code{c(1, 3)}.}
+
 \item{axis.lbl.style}{whether to apply \code{visaux::number.to.formatted.string}
 to log axis labels}
 }
