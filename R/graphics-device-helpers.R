@@ -1,8 +1,6 @@
 
 
 
-
-
 #' ragg.wrapper
 #'
 #' Wraps `ragg::agg_png` to save a plot as .png. An alternative to ggsave. See
@@ -15,7 +13,12 @@
 #'   dir.
 #' @param width,height,res,units passed onto `ragg::agg_png`
 #'
+#' @importFrom glue glue
+#' @importFrom ragg agg_png
+#' @importFrom ggplot2 ggsave
+#'
 #' @export ragg.wrapper
+#'
 ragg.wrapper <- function(fn = NULL
                          ,plot = ggplot2::last_plot()
                          ,sv.dir = 'visuals/'
@@ -31,8 +34,9 @@ ragg.wrapper <- function(fn = NULL
   # gen filename if NULL
   if(is.null(fn)) {
 
-    extant.defaults <- list.files(sv.dir
-                                  , pattern = '-[0-9]*\\.png')
+    extant.defaults <- list.files(
+       sv.dir
+      ,pattern = '-[0-9]*\\.png')
 
     nm <- stringr::str_extract(extant.defaults
                                ,'[0-9]+')
@@ -64,6 +68,8 @@ ragg.wrapper <- function(fn = NULL
 #' Wraps ggsave with some defaults to save vectorized images.
 #'
 #' @param dir,fn directory and filename to save to
+#'
+#' @importFrom stringr str_extract
 #'
 #' @export vector.ggsave
 #'
