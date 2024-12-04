@@ -1,8 +1,6 @@
 
 # log scale helpers -------------------------------------------------------
 
-# originally from ccpDOT project.
-
 
 #' breaks_log10
 #'
@@ -15,7 +13,7 @@
 #'   major breaks at every power of 10. I.e. every 1e6, 1e7 if left at just one,
 #'   but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
 #'
-#'  @export breaks_log10
+#' @export breaks_log10
 #'
 breaks_log10 <- function(x, break.intervals = c(1)) {
 
@@ -44,7 +42,7 @@ minor.breaks_log10 <- function(x) {
   #       ) %>%
   #   as.vector()
 
-  5 * 10^(seq.int(low, high))
+  5 * 10 ^ (seq.int(low, high))
 }
 
 
@@ -58,8 +56,8 @@ minor.breaks_log10 <- function(x) {
 #' @param minor.breaks List with elements for x and y to pass onto
 #'   `minor_breaks` in the scale
 #'
-#'
 #' @import ggplot2
+#' @importFrom hrbrthemes theme_ipsum
 #'
 #' @export ggthme.logscales
 #'
@@ -180,6 +178,8 @@ jewel.pal <- function() {
 #' dt.table.template
 #'
 #' Wrapped DT::datatable defaults
+#'
+#' @importFrom DT datatable
 #'
 #' @export dt.table.template
 #'

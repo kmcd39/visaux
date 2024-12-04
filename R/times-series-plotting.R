@@ -7,6 +7,8 @@
 #' @param group.col column indicating group. Each will be labelled.
 #' @param date.col date or time column for x axis.
 #'
+#' @importFrom ggrepel geom_label_repel
+#' @importFrom rlang sym
 #'
 #' @export ts.labels.geom
 ts.labels.geom <- function(tsx,
@@ -17,7 +19,6 @@ ts.labels.geom <- function(tsx,
                            ,color = 'black') {
 
   require(tidyverse)
-  require(ggrepel)
 
   .date <- rlang::sym(date.col)
   .group <- rlang::sym(group.col)
@@ -25,14 +26,16 @@ ts.labels.geom <- function(tsx,
   ts.lbls <- tsx %>%
     filter(!!.date == max(!!.date))
 
-  lbls <- ggrepel::geom_label_repel( data = ts.lbls
-                                     ,aes(label = !!.group
-                                          ,fill = !!.group
-                                     )
-                                     ,color = color
-                                     ,size = size
-                                     ,alpha = alpha
+  lbls <- ggrepel::geom_label_repel(
+    data = ts.lbls
+    ,aes(label = !!.group
+         ,fill = !!.group
+    )
+    ,color = color
+    ,size = size
+    ,alpha = alpha
   )
+
   return(lbls)
 }
 
@@ -48,6 +51,9 @@ ts.labels.geom <- function(tsx,
 #'
 #' @param recessions as pulled from `fredr::fredr(series_id = 'JHDUSRGDPBR')`,
 #'   with additional arguments for month/qtr/annual or observation start.
+#'
+#' @importFrom fredr fredr
+#' @import dplyr
 #'
 #' @export get.recessions.start.ends
 get.recessions.start.ends <- function(recessions = NULL) {
