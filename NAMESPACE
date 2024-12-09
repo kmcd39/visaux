@@ -3,6 +3,7 @@
 export(bbox2ggcrop)
 export(breaks_log10)
 export(cap.at.quantile)
+export(cci.pal)
 export(dt.table.template)
 export(format_as.numeric)
 export(get.recessions.start.ends)
