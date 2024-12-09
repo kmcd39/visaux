@@ -163,6 +163,7 @@ upper.legend.box <- function(
 #' visualization. Colorblindness simulator seems to show decent accessibility.
 #'
 #' @export jewel.pal
+#'
 jewel.pal <- function() {
 
   jewel.tones <- c( '#880088', '#000088'
@@ -170,6 +171,26 @@ jewel.pal <- function() {
                    ,'#bb1e39', '#88ac7f'
   )
   return(jewel.tones)
+}
+
+#' cci.pal
+#'
+#'
+#' @export cci.pal
+#'
+cci.pal <- function(n = 5 ) {
+
+  cci.cols <- c(
+     "blues" = "#6599A9"
+     ,"purples" = "#A54F9B"
+    ,"greens" = "#2A845A"
+    ,"reds" = "#F1573D"
+    ,"yellows" = "#F9E26F"
+    ,"oranges" = "#F89B45"
+  )
+
+  return(cci.cols[1:n])
+
 }
 
 # data tables -------------------------------------------------------------
