@@ -56,9 +56,6 @@ minor.breaks_log10 <- function(x) {
 #' @param minor.breaks List with elements for x and y to pass onto
 #'   `minor_breaks` in the scale
 #'
-#' @import ggplot2
-#' @importFrom hrbrthemes theme_ipsum
-#'
 #' @export ggthme.logscales
 #'
 ggthme.logscales <- function(
@@ -82,26 +79,27 @@ ggthme.logscales <- function(
       hrbrthemes::theme_ipsum()
 
     ,"log.x.axis" =
-      scale_x_log10(
+      ggplot2::scale_x_log10(
         breaks = ~breaks_log10(.x, break.intervals$x)
         ,minor_breaks  =  minor.breaks$x
         ,labels = lbl.style
       )
 
     ,"log.y.axis" =
-      scale_y_log10(
+      ggplot2::scale_y_log10(
         breaks = ~breaks_log10(.x, break.intervals$y)
         ,minor_breaks = minor.breaks$y
         ,labels = lbl.style
       )
 
     ,"grid.details" =
-      theme(panel.grid.major =
-              element_line(color = "grey65",
-                           linewidth = 0.25)
-            ,panel.grid.minor =
-              element_line(color = "grey75",
-                           linewidth = 0.18)
+      ggplot2::theme(
+        panel.grid.major =
+          ggplot2::element_line(color = "grey65",
+                                linewidth = 0.25)
+        ,panel.grid.minor =
+          ggplot2::element_line(color = "grey75",
+                                linewidth = 0.18)
       )
   )
 
@@ -120,9 +118,9 @@ ggemphatic.facet.labels <- function(
     strip.color = visaux::jewel.pal()[4]) {
 
   ggplot2::theme(
-    strip.background = element_rect(
+    strip.background = ggplot2::element_rect(
       fill = strip.color )
-    ,strip.text = element_text(
+    ,strip.text = ggplot2::element_text(
       face = 'bold'
       ,color = 'white'
       #,size = fontsize - 1
@@ -145,8 +143,9 @@ upper.legend.box <- function(
 
   ggplot2::theme(
      legend.position = leg.pos
-    ,legend.box.background = element_rect(color="gray30"
-                                         , size=.05)
+    ,legend.box.background =
+      ggplot2::element_rect(color="gray30"
+                            , size=.05)
     ,legend.box.margin = lmargin
     ,legend.justification = 'top'
   )
@@ -200,7 +199,6 @@ cci.pal <- function(n = 5 ) {
 #'
 #' Wrapped DT::datatable defaults
 #'
-#' @importFrom DT datatable
 #'
 #' @export dt.table.template
 #'
@@ -208,7 +206,7 @@ dt.table.template <- function(x) {
 
   DT::datatable(x
                 ,extensions = 'Buttons'
-                ,options = list(dom='Bfrtp'
+                ,options = list( dom = 'Bfrtp'
                                 ,ordering=F
                                 ,pageLength =20
                                 ,buttons=c('copy','csv','excel')))

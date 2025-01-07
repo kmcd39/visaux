@@ -7,19 +7,22 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
+Imports: 
+    dplyr,
+    DT,
+    fredr,
+    ggplot2,
+    ggrepel,
+    glue,
+    hrbrthemes,
+    magrittr,
+    purrr,
+    ragg,
+    rlang,
+    sf,
+    stringr,
+    tibble,
+    tidyselect
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Imports: 
-    dplyr,
-    ggplot2,
-    glue,
-    purrr,
-    rlang,
-    stringr
-Suggests:
-    DT,
-    fredr,
-    ggrepel,
-    hrbrthemes,
-    ragg

@@ -6,35 +6,30 @@
 #' @param tsx time series data
 #' @param group.col column indicating group. Each will be labelled.
 #' @param date.col date or time column for x axis.
+#' @param ... Passed onto `ggrepel::geom_label_repel`
 #'
-#' @importFrom ggrepel geom_label_repel
-#' @importFrom rlang sym
 #'
 #' @export ts.labels.geom
+#'
 ts.labels.geom <- function(tsx,
                            group.col,
-                           date.col = 'date'
-                           ,size = 3
-                           ,alpha = .6
-                           ,color = 'black') {
-
-  require(tidyverse)
+                           date.col = 'date',
+                           ...) {
 
   .date <- rlang::sym(date.col)
   .group <- rlang::sym(group.col)
 
-  ts.lbls <- tsx %>%
-    filter(!!.date == max(!!.date))
+  ts.lbls <- tsx  |>
+    dplyr::filter(!!.date == max(!!.date))
 
-  lbls <- ggrepel::geom_label_repel(
-    data = ts.lbls
-    ,aes(label = !!.group
-         ,fill = !!.group
+  lbls <-
+    ggrepel::geom_label_repel(
+      data = ts.lbls
+      ,ggplot2::aes(label = !!.group
+           ,fill = !!.group
+      ),
+      ...
     )
-    ,color = color
-    ,size = size
-    ,alpha = alpha
-  )
 
   return(lbls)
 }
@@ -53,7 +48,6 @@ ts.labels.geom <- function(tsx,
 #'   with additional arguments for month/qtr/annual or observation start.
 #'
 #' @importFrom fredr fredr
-#' @import dplyr
 #'
 #' @export get.recessions.start.ends
 get.recessions.start.ends <- function(recessions = NULL) {
@@ -61,21 +55,21 @@ get.recessions.start.ends <- function(recessions = NULL) {
 
   if(is.null(recessions))
     recessions <- fredr::fredr(
-      series_id = 'JHDUSRGDPBR') %>%
-      select(-matches('^realtime'))
+      series_id = 'JHDUSRGDPBR') |>
+      dplyr::select(-tidyselect::matches('^realtime'))
 
-  recessions <- recessions %>%
-    mutate(start =
-             lag(value, order_by = date) %in% c(0, NA) &
-             value == 1
-           ,end =
-             lead(value, order_by = date) %in% c(0, NA) &
-             value == 1
+  recessions <- recessions |>
+    dplyr::mutate(start =
+                    dplyr::lag(value, order_by = date) %in% c(0, NA) &
+                    value == 1
+                  ,end =
+                    dplyr::lead(value, order_by = date) %in% c(0, NA) &
+                    value == 1
     )
 
-  recessions <- tibble(
-    starts = filter(recessions, start)$date
-    ,ends = filter(recessions, end)$date
+  recessions <- tibble::tibble(
+    starts = dplyr::filter(recessions, start)$date
+    ,ends = dplyr::filter(recessions, end)$date
   )
 
   return(recessions)
@@ -102,9 +96,9 @@ gg.recessions.ts <- function(recessions = NULL
   if(is.null(recessions))
     recessions <- get.recessions.start.ends()
 
-  lyr <- geom_rect(
+  lyr <- ggplot2::geom_rect(
     data = recessions
-    ,aes(
+    ,ggplot2::aes(
       xmin = starts
       ,xmax = ends
       ,ymin = -Inf

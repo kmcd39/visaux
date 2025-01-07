@@ -11,15 +11,16 @@
 #' @param x values
 #' @param ptile percentile at which to cap `x`
 #'
+#'
 #' @export cap.at.quantile
 cap.at.quantile <- function(x, ptile = .95, na.rm = T) {
 
-  dplyr::if_else(x >= quantile(x, probs = ptile
-                               ,na.rm = na.rm)
-                 ,quantile(x, probs = ptile
-                           , na.rm = na.rm)
-                 ,x
-  )
+  cap <- stats::quantile(x, probs = ptile
+                         ,na.rm = na.rm)
+
+  dplyr::if_else(x >= cap
+                 ,cap
+                 ,x)
 }
 
 
@@ -29,6 +30,7 @@ cap.at.quantile <- function(x, ptile = .95, na.rm = T) {
 #' `labels` argument. I.e., scale_fill_viridis_c(labels = visaux::ggcapped.labels(x))
 #'
 #' @export ggcapped.labels
+#'
 ggcapped.labels <- function(x, tails = 'one'
                                  ) {
   x[length(x)] <- paste0('>', x[length(x)])
@@ -132,6 +134,7 @@ format_as.numeric <- function(x) {
 #'
 #' @importFrom stringr str_extract_all
 #' @importFrom purrr map_dbl
+#' @importFrom magrittr %>%
 #'
 #' @export get_mean_from_interval
 #'

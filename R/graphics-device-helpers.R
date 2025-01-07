@@ -35,11 +35,13 @@ ragg.wrapper <- function(fn = NULL
   if(is.null(fn)) {
 
     extant.defaults <- list.files(
-       sv.dir
+      sv.dir
       ,pattern = '-[0-9]*\\.png')
 
-    nm <- stringr::str_extract(extant.defaults
-                               ,'[0-9]+')
+    nm <- stringr::str_extract(
+      extant.defaults
+      ,'[0-9]+')
+
     if(length(nm) == 0)
       nm <- 0
 
@@ -57,7 +59,7 @@ ragg.wrapper <- function(fn = NULL
                 ,res = res
                 ,units = units)
   print(plot)
-  invisible(dev.off())
+  invisible(grDevices::dev.off())
 }
 
 

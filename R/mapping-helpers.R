@@ -15,7 +15,7 @@ bbox2ggcrop <- function(sfx, crs = 4326, clip = 'on') {
 
   # turn sf to bbox if needed
   if(! 'bbox' %in% class(sfx))
-    sfx <- sfx %>% sf::st_transform(crs) %>% sf::st_bbox()
+    sfx <- sfx |>  sf::st_transform(crs) |>  sf::st_bbox()
 
   # return coord_sf
   ggplot2::coord_sf( xlim = c(sfx[['xmin']], sfx['xmax'])

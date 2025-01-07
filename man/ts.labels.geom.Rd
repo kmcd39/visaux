@@ -4,14 +4,7 @@
 \alias{ts.labels.geom}
 \title{ts.labels.geom}
 \usage{
-ts.labels.geom(
-  tsx,
-  group.col,
-  date.col = "date",
-  size = 3,
-  alpha = 0.6,
-  color = "black"
-)
+ts.labels.geom(tsx, group.col, date.col = "date", ...)
 }
 \arguments{
 \item{tsx}{time series data}
@@ -19,6 +12,8 @@ ts.labels.geom(
 \item{group.col}{column indicating group. Each will be labelled.}
 
 \item{date.col}{date or time column for x axis.}
+
+\item{...}{Passed onto \code{ggrepel::geom_label_repel}}
 }
 \description{
 Returns a ggplot2 geometry that anticipates labeling lines of a multi-group
