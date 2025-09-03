@@ -172,6 +172,43 @@ jewel.pal <- function() {
   return(jewel.tones)
 }
 
+#' acc.pal
+#'
+#' Pretty / jewel-toned color palette designed by accessibility-minded designers
+#' from UK civil service data network:
+#' https://analysisfunction.civilservice.gov.uk/.
+#'
+#' @export acc.pal
+#'
+acc.pal <- function(n = 6, names = F) {
+
+  pal <- c(
+     "#12436D"
+    ,"#28A197"
+    ,"#801650"
+    ,"#F46A25"
+    ,"#3D3D3D"
+    ,"#A285D1"
+    )
+
+  if(names)
+    pal <- pal |>
+      purrr::set_names(
+        c(
+          "darkblue"
+          ,"turquoise"
+          ,"fuschia"
+          ,"orange"
+          ,"darkgrey"
+          ,"lavender"
+        )
+      )
+
+  return(pal[1:n])
+
+
+}
+
 #' cci.pal
 #'
 #'
