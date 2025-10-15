@@ -9,7 +9,7 @@
 #' solution adapted from https://r-graphics.org/recipe-axes-axis-log-ticks
 #'
 #' @param x vector mapped to x or y scales.
-#' @param break.intervals A vector of numerics between [1,9] for there to be
+#' @param break.intervals A vector of numerics between 1-9 for there to be
 #'   major breaks at every power of 10. I.e. every 1e6, 1e7 if left at just one,
 #'   but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
 #'
@@ -29,7 +29,8 @@ breaks_log10 <- function(x, break.intervals = c(1)) {
 #' minor.breaks_log10
 #'
 #'
-#' Manually adds minor breaks at very power of 5 for log-scale axes.
+#' @description Manually adds minor breaks at every power of 5 for log-scale
+#'   axes.
 #'
 #'
 minor.breaks_log10 <- function(x) {
@@ -48,13 +49,13 @@ minor.breaks_log10 <- function(x) {
 
 #' ggthme.logscales
 #'
+#' @inheritParams breaks_log10
 #' @param axis.lbl.style whether to apply `visaux::number.to.formatted.string`
 #'   to log axis labels
-#' @param break.intervals A vector of numerics between [1,9] for there to be
-#'   major breaks at every power of 10. I.e. every 1e6, 1e7 if left at just one,
-#'   but 1e6, 3e6, 1e6, 3e7 if includes `c(1, 3)`.
 #' @param minor.breaks List with elements for x and y to pass onto
 #'   `minor_breaks` in the scale
+#'
+#' @return a named list of ggplot thematic elements
 #'
 #' @export ggthme.logscales
 #'
@@ -75,10 +76,8 @@ ggthme.logscales <- function(
   }
 
   list(
-    "base.theme" =
-      hrbrthemes::theme_ipsum()
 
-    ,"log.x.axis" =
+     "log.x.axis" =
       ggplot2::scale_x_log10(
         breaks = ~breaks_log10(.x, break.intervals$x)
         ,minor_breaks  =  minor.breaks$x

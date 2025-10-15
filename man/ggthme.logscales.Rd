@@ -11,7 +11,7 @@ ggthme.logscales(
 )
 }
 \arguments{
-\item{break.intervals}{A vector of numerics between \link{1,9} for there to be
+\item{break.intervals}{A vector of numerics between 1-9 for there to be
 major breaks at every power of 10. I.e. every 1e6, 1e7 if left at just one,
 but 1e6, 3e6, 1e6, 3e7 if includes \code{c(1, 3)}.}
 
