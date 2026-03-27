@@ -7,5 +7,6 @@
 minor.breaks_log10(x)
 }
 \description{
-Manually adds minor breaks at very power of 5 for log-scale axes.
+Manually adds minor breaks at every power of 5 for log-scale
+axes.
 }

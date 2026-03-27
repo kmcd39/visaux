@@ -68,10 +68,6 @@ number.to.formatted.string <- function(
 ) {
 
   #browser()
-
-  if(is.na(x))
-    return( as.character(NA) )
-
   #format.fcn <- function(x) format(x, ..., scientific = F, drop0trailing = T)
 
   div.factors <- c(1e2, 1e3, 1e6,
@@ -79,22 +75,32 @@ number.to.formatted.string <- function(
   div.lbls <-  c("hundred", 'thousand', 'million',
                  'billion', 'trillion', "quadrillion")
 
-  if( abs(x) < min(div.factors) )
+  if( max(abs(x[!is.na(x)])) < min(div.factors) ) {
+    if( length(x[!is.na(x)] ) == 0 )
+      stop("no non-NA values passed to `number.to.formatted.string`")
     return( format.fcn(x) )
+  }
+
 
   if(pluralize)
     div.lbls <- paste0(div.lbls, 's')
 
-  # max(div.factors[div.factors < 5e10 ])
   # ?max(div.factors[div.factors < 5 ])
-  div.factor <- max(div.factors[div.factors <= abs(x) ])
 
   fx <-
-    paste0(
-      format.fcn(x / div.factor),
-      ' ',
-      div.lbls[which(div.factors == div.factor)]
+    purrr::map_chr(
+      x,
+      ~{
+        if( is.na(.x) )
+          return( as.character(NA) )
+        div.factor <- max(div.factors[div.factors <= abs(.x) ])
+        paste0(
+          format.fcn(.x / div.factor),
+          ' ',
+          div.lbls[which(div.factors == div.factor)]
+        )}
     )
+
 
   return(fx)
 }

@@ -21,6 +21,9 @@ but 1e6, 3e6, 1e6, 3e7 if includes \code{c(1, 3)}.}
 \item{axis.lbl.style}{whether to apply \code{visaux::number.to.formatted.string}
 to log axis labels}
 }
+\value{
+a named list of ggplot thematic elements
+}
 \description{
 ggthme.logscales
 }
