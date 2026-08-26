@@ -33,12 +33,12 @@ cap.at.quantile <- function(x, ptile = .95, na.rm = T) {
 #'
 ggcapped.labels <- function(x, tails = 'one'
                                  ) {
-  x[length(x)] <- paste0('>', x[length(x)])
+  x[length(x)] <- paste0("≥", x[length(x)])
 
   if(tails == 'one')
     return(x)
 
-  x[1] <- paste0('<', x[1])
+  x[1] <- paste0("≤", x[1])
 
   return(x)
 }
